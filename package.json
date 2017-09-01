@@ -1,0 +1,25 @@
+{
+  "name": "koa-project",
+  "version": "1.0.0",
+  "description": "",
+  "engines": {
+    "node": ">7.6"
+  },
+  "dependencies": {
+    "boom": "^5.2.0",
+    "koa": "^2.3.0",
+    "koa-generic-session": "^2.0.0",
+    "koa-redis": "^3.0.0",
+    "koa-router": "^7.2.1",
+    "koa-static-cache": "^5.1.1",
+    "mysql": "^2.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "dev": "NODE_ENV=development DEBUG=app:* nodemon ./server/www.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
