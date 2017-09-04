@@ -6,8 +6,9 @@ const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
 const router = require('./router/index')
 const config = require('./config')
-
+const db = require('./db')
 const app = new Koa()
+
 
 app.keys = ['2017yidian', 'yidian2017']
 
