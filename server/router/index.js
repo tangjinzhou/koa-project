@@ -1,4 +1,7 @@
 const Router = require('koa-router')
+const uuid = require('uuid/v1');
+
+
 const router = new Router()
 const reportRouter = require('./report')
 const { login } = require('../controller/login')
@@ -18,7 +21,7 @@ router.post(/^\/api(?:\/|$)/, function (ctx, next) {
 
 router.get(/^\/api(?:\/|$)/, function (ctx, next) {
   ctx.status = 405;
-});
+})
 
 router.get('/login', (ctx) => {
   ctx.body = 'login';
