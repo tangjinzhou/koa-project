@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const Boom = require('boom')
+const render = require('koa-ejs')
 const path = require('path')
 const staticCache = require('koa-static-cache')
 const session = require('koa-generic-session')
@@ -17,6 +18,13 @@ app.use(staticCache(path.join(__dirname, 'public'), {
   gzip: true,
   dynamic: true,
 }))
+
+render(app, {
+  root: path.join(__dirname, 'view'),
+  layout: false,
+  viewExt: 'ejs',
+  cache: true,
+});
 
 // redis多进程共享session
 app.use(session({
