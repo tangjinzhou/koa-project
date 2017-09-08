@@ -7,9 +7,9 @@ const session = require('koa-generic-session')
 const redisStore = require('koa-redis')
 const router = require('./router/index')
 const config = require('./config')
-const db = require('./db')
+// const db = require('./db')
 const app = new Koa()
-
+console.log(process.env.REDIS_PORT_6379_TCP_ADDR + ':' + process.env.REDIS_PORT_6379_TCP_PORT);
 
 app.keys = ['2017yidian', 'yidian2017']
 
