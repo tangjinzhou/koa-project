@@ -1,7 +1,7 @@
 app1:
     build: ./app
     links:
-        - master:redis-master
+        - master:rs
     ports:
         - "3001:3000"
 
@@ -12,10 +12,9 @@ master:
 
 slave1:
   image: redis:4.0.1
-  command: redis-server --slaveof redis-master 6379
+  command: redis-server --slaveof rs 6379
   links:
-    - master:redis-master
-
+    - master:rs
 
 sentinel1:
   build: sentinel
@@ -23,6 +22,6 @@ sentinel1:
     - SENTINEL_DOWN_AFTER=5000
     - SENTINEL_FAILOVER=5000
   links:
-    - master:redis-master
+    - master:rs
     - slave1
 
