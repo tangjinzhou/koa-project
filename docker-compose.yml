@@ -1,27 +1,35 @@
 app1:
     build: ./app
     links:
-        - master:rs
+        - redis-sentinel1:rs1
+        - redis-sentinel2:rs2
+        - redis-sentinel3:rs3
     ports:
         - "3001:3000"
 
-master:
+redis-master:
   image: redis:4.0.1
   ports:
         - "6379"
 
-slave1:
+redis-slave1:
   image: redis:4.0.1
   command: redis-server --slaveof rs 6379
   links:
-    - master:rs
+    - redis-master:rs
 
-sentinel1:
+redis-sentinel1:
   build: sentinel
-  environment:
-    - SENTINEL_DOWN_AFTER=5000
-    - SENTINEL_FAILOVER=5000
   links:
-    - master:rs
-    - slave1
+    - redis-master:rs
+
+redis-sentinel2:
+  build: sentinel
+  links:
+    - redis-master:rs
+
+redis-sentinel3:
+  build: sentinel
+  links:
+    - redis-master:rs
 

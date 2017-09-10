@@ -4,7 +4,8 @@ const render = require('koa-ejs')
 const path = require('path')
 const staticCache = require('koa-static-cache')
 const session = require('koa-generic-session')
-const redisStore = require('koa-redis')
+const redisStore = require('./middleware/koa-ioredis')
+    // const Redis = require('ioredis');
 const router = require('./router/index')
 const config = require('./config')
     // const db = require('./db')
@@ -25,10 +26,11 @@ render(app, {
     viewExt: 'ejs',
     cache: true,
 });
-
-// redis多进程共享session
+const store = redisStore(config.redisConfig)
+console.log(process.env.RS1_PORT_6379_TCP_ADDR)
+    // redis多进程共享session
 app.use(session({
-    store: redisStore(config.redisConfig),
+    store,
     key: config.sessionKey,
     prefix: 'user_session',
 }))

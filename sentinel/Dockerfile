@@ -9,4 +9,5 @@ ENV SENTINEL_FAILOVER 10000
 ENV SENTINEL_PORT 26000
 ADD entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
+EXPOSE 26379
 ENTRYPOINT ["entrypoint.sh"]

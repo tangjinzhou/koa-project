@@ -1,58 +1,59 @@
 const mysql = require('mysql')
 let db = null
 const config = {
-  host     : 'localhost',
-  user     : 'root',
-  password : 'tangjinzhou',
-  database : 'yidian_crm',
-  multipleStatements: true,
+    host: 'localhost',
+    user: 'root',
+    password: 'tangjinzhou',
+    database: 'yidian_crm',
+    multipleStatements: true,
 }
 const pool = mysql.createPool(config);
 
-function handleError (err) {
-  if (err) {
-    // 如果是连接断开，自动重新连接
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      connect();
-    } else {
-      console.error(err.stack || err);
+function handleError(err) {
+    if (err) {
+        // 如果是连接断开，自动重新连接
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            connect();
+        } else {
+            console.error(err.stack || err);
+        }
     }
-  }
 }
 
 const poolQuery = (sqlString, values, callback) => {
-  let cb = callback, vals = []
-  if(typeof values === 'function') {
-    cb = values
-  } else {
-    vals = values
-  }
-  return new Promise((resolve, reject) => {
-    pool.getConnection(function(err,conn){
-      if(err){
-        handleError(err);
-      }else{
-        conn.query(sqlString, vals, (error, results, fields) => {
-          conn.release(); // 释放连接
-          cb && cb(error, results, fields);
-          if(error) {
-            reject(error)
-          } else {
-            resolve({results, fields})
-          }
+    let cb = callback,
+        vals = []
+    if (typeof values === 'function') {
+        cb = values
+    } else {
+        vals = values
+    }
+    return new Promise((resolve, reject) => {
+        pool.getConnection(function(err, conn) {
+            if (err) {
+                handleError(err);
+            } else {
+                conn.query(sqlString, vals, (error, results, fields) => {
+                    conn.release(); // 释放连接
+                    cb && cb(error, results, fields);
+                    if (error) {
+                        reject(error)
+                    } else {
+                        resolve({ results, fields })
+                    }
+                });
+                conn.on('error', handleError);
+            }
         });
-        conn.on('error', handleError);
-      }
-    });
-  })
-  
-  return res;
+    })
+
+    // return res;
 }
 
-function connect () {
-  db = mysql.createConnection(config);
-  db.connect(handleError);
-  db.on('error', handleError);
+function connect() {
+    db = mysql.createConnection(config);
+    db.connect(handleError);
+    db.on('error', handleError);
 }
 connect()
 
@@ -67,11 +68,11 @@ const sql = `CREATE TABLE IF NOT EXISTS accounts_info (
   INDEX (account_id, account_name, account_email)
 )`
 async function test() {
-  const res = await poolQuery(sql)
+    const res = await poolQuery(sql)
 }
 
 test().catch((e) => {
-  console.error(e)
+    console.error(e)
 })
 
 
