@@ -10,7 +10,6 @@ const router = require('./router/index')
 const config = require('./config')
     // const db = require('./db')
 const app = new Koa()
-console.log(process.env.RS_PORT_6379_TCP_ADDR);
 
 app.keys = ['2017yidian', 'yidian2017']
 
@@ -27,7 +26,6 @@ render(app, {
     cache: true,
 });
 const store = redisStore(config.redisConfig)
-console.log(process.env.RS1_PORT_6379_TCP_ADDR)
     // redis多进程共享session
 app.use(session({
     store,

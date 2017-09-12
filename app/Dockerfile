@@ -1,5 +1,6 @@
-FROM node:8.4.0
-RUN npm install -g pm2
+FROM registry.docker-cn.com/library/node:8.4.0
+RUN npm config set registry https://registry.npm.taobao.org \
+    && npm install -g pm2
 
 ADD package.json /tmp/package.json
 RUN cd /tmp && npm install
@@ -10,4 +11,5 @@ ADD . /src
 
 EXPOSE  3000
 
-CMD ["npm", "run", "dev"]
+CMD pm2 start server/www.js
+# CMD npm run dev
